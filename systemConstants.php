@@ -1,0 +1,9 @@
+<?php	
+	define("DB_SERVER","localhost");
+	define("DB_USER","michele");
+	define("DB_PASS","myknysna");
+	define("DB_NAME","chickencentral");		
+	define("FS_PATH","/var/www/public_html/chickencentral/public/PicturePlace/");
+	define("PICTURE_ROOT","/PicturePlace/");
+	define("DEFAULT_IMAGE","/assets/default_profile_image.jpg");
+?>
