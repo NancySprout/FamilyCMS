@@ -1,7 +1,5 @@
-<?php require_once("../includes/dbFunctions.php"); ?>
-<?php require_once("../includes/systemConstants.php"); ?>
-
-<?php
+<?php require_once("dbFunctions.php"); 
+require_once("systemConstants.php");
 
 //Initialize global user arrays
 $selectedUser=array();
@@ -22,15 +20,10 @@ function make_fieldname_text($fieldname) {
 function output_errors($errors=array()) {
 	$errorList="";
 	if(!empty($errors)){
-		$errorList.="<div>";
-		$errorList.="Please try to correct the following:";
-		$errorList.="<ul>";
 		foreach($errors as $key=>$error){
-			$errorList.="<li>";
-			$errorList.=htmlentities($error);
-			$errorList.="</li>";		
+			$errorList.="*".htmlentities($error);
+			$errorList.="<br>";		
 		}			
-		$errorList.="</ul></div>";
 	}		
 	return $errorList;
 }		
@@ -80,7 +73,7 @@ function create_user_dir(){
 	return 	$safeUserDir;
 	} else {
 		chdir($oldDir);
-		error_log("create_user_dir: Could not create user directory in ".FS_PATH);
+		error_log("create_user_dir: Could not create user directory in ".FS_PATH,0);
 		return false;
 	}
 }
@@ -102,11 +95,11 @@ function delete_image_file($userId, $imageId){
 			return true;  	
     	} else {
     		chdir($oldDir); // Restore the old working directory    
-			error_log("delete_image_file: ".$safeFileName." could not be deleted.");  
+			error_log("delete_image_file: ".$safeFileName." could not be deleted.",0);  
 			return false;  	
     	}		
 	} else {
-		error_log("delete_image_file: Could not retrieve parameters from db: ".$message);
+		error_log("delete_image_file: Could not retrieve parameters from db: ".$message,0);
 		return false;
 	}
 }
@@ -122,7 +115,7 @@ function delete_user_dir($userId) {
 			return true;
 		} else return false;		
 	} else {
-		error_log("delete_user_dir: user_dir could not be found.");
+		error_log("delete_user_dir: user_dir could not be found.",0);
 		return false;
 	}
 }
@@ -130,18 +123,18 @@ function delete_user_dir($userId) {
 //Retrieve a complete record (array) for selected user from db
 function find_selected_user() {
 	global $selectedUser;	
-	if (isset($_GET["id"])){
+	if (isset($_GET["id"])) {
 		$userId=(int) ($_GET["id"]);
 		$selectedUser=get_user($userId);
 		$_SESSION["id"]=$userId;
 		if(!$selectedUser) {
-		error_log("find_selected_user: selected user not found for user_id=".$userId);
+			error_log("find_selected_user: selected user not found for user_id=".$userId,0);
 		}
-	} elseif (isset($_SESSION["id"])){
+	} elseif (isset($_SESSION["id"])) {
 		$userId=(int) ($_SESSION["id"]);
 		$selectedUser=get_user($userId);
 		if(!$selectedUser) {
-		error_log("find_selected_user: selected user not found for user_id=".$userId);
+			error_log("find_selected_user: selected user not found for user_id=".$userId,0);
 		}
 	}	else $selectedUser=null;	
 }
@@ -162,15 +155,10 @@ function find_logged_in_user() {
 function display_users() {
 	global $loggedInUser;	
 	$allUsers=get_all_users();
-	$output="<ul>";
+	$output="";
 	while($user=mysqli_fetch_assoc($allUsers)) {
-		$output.="<li><h3>";
-		$output.=htmlentities($user["name"]);
-		$output.="</h3><p>";
-		$output.=htmlentities($user["description"]);
-		$output.="</p><a href=\"";	
-		$output.="show_user_images.php";
-		$output.="?id=";
+		$output.="<a class=\"pictureFrame\" href=\"";
+		$output.="show_user_images.php?id=";
 		$output.=urlencode($user["id"]);
 		$output.="\">";
 		$output.="<img src=\"";
@@ -178,9 +166,10 @@ function display_users() {
 		$output.="\" ";
 		$output.="alt=";
 		$output.=htmlentities($user["name"]);		
-		$output.="></a></li>";
+		$output.="><div class=\"caption\"><p>";
+		$output.=htmlentities($user["name"]);
+		$output.="</p></div></a>";
 	}
-	$output.="</ul>";
 	mysqli_free_result($allUsers);
 	return $output;
 }

@@ -1,6 +1,5 @@
-<?php require_once("../includes/functions.php"); ?>
-
 <?php 
-session_unset();
-redirect_to("index.php");
+	require_once("functions.php");
+	session_unset();
+	redirect_to("index.php");
 ?>

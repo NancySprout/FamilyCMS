@@ -1,11 +1,10 @@
-<?php require_once("../includes/session.php"); ?>
-<?php require_once("../includes/dbConnection.php"); ?>
-<?php require_once("../includes/functions.php"); ?>
-<?php require_once("../includes/validationFunctions.php"); ?>
+<?php require_once("session.php");
+require_once("dbConnection.php");
+require_once("functions.php");
+require_once("validationFunctions.php");
 
-<?php
 if (isset($_POST['submit'])) {	
-
+	
 	//Validations - these functions will add errors to the global $errors-array
 	$requiredFields = array("email","password");
 	check_required_fields($requiredFields);	
@@ -16,30 +15,16 @@ if (isset($_POST['submit'])) {
 		$loggedInUser=get_user_by_email($_POST["email"]);
 		if($loggedInUser) {
 			$typedPassword=$_POST["password"];
-			if (!authenticate_user($typedPassword)){
-				redirect_to("logout.php");		
+			if(!authenticate_user($typedPassword)) {
+				echo "You entered invalid information";	
 			} else {
 				$_SESSION["logId"]=$loggedInUser["id"];
-				redirect_to("main.php");
+				echo "Success";
 			}
-		}
-	}
-	redirect_to("logout.php");
+		} else echo "You entered invalid information";
+	} else echo output_errors($errors);
 }
 ?>
-<?php include("../includes/header.php"); ?>
-<main>
-	<h1>We Belong Here</h1>
-	<form action="login.php" method="post">	
-			<label>E-mail
-				<input type="email" name="email" value="">
-			</label>
-			<label>Password
-				<input type="password" name="password" value="">
-			</label>
-			<input type="submit" name="submit" value="Login" >	
-	</form>
-</main>
-<?php include("../includes/footer.php"); ?>
+
 
 

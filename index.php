@@ -1,46 +1,21 @@
-<?php require_once("../includes/session.php"); ?>
-<?php require_once("../includes/dbConnection.php"); ?>
-<?php require_once("../includes/functions.php"); ?>
-<?php require_once("../includes/validationFunctions.php"); ?>
+<?php 
 
-<?php
-if (isset($_POST['submit'])) {	
+require_once("functions.php");
 
-	//Validations - these functions will add errors to the global $errors-array
-	$requiredFields = array("email","password");
-	check_required_fields($requiredFields);	
-	validate_email($_POST["email"]);
-	validate_password();	
-	
-	if(empty($errors)) {
-		$loggedInUser=get_user_by_email($_POST["email"]);
-		if($loggedInUser) {
-			$typedPassword=$_POST["password"];
-			if (!authenticate_user($typedPassword)){
-				redirect_to("logout.php");		
-			} else {
-				$_SESSION["logId"]=$loggedInUser["id"];
-				redirect_to("main.php");
-			}
-		}
-	}
-	redirect_to("logout.php");
-}
-?>
-<?php include("../includes/header.php"); ?>
-<main>
-	<form class="login" action="index.php" method="post">	
-			<label>E-mail
-				<input type="email" name="email" value="">
-			</label>
-			<label>Password
-				<input type="password" name="password" value="">
-			</label><br><br>
-			<label>
-				<input type="submit" name="submit" value="In Here" >
-			</label>
-	</form>
-</main>
-<?php include("../includes/footer.php"); ?>
+//Some user could be logged in
+find_logged_in_user();
+$loggedId= (int) $loggedInUser["id"];
 
+//There is no user selected at this point
+$userId=null; 
+
+include("navigation.php"); ?>
+	<section>
+		<h1>Picture Gallery</h1>
+		<!--Image gallery-->
+		<div id="gallery">
+			<?php	echo display_users(); ?>
+		</div>	
+	</section>
+<?php include("footer.php"); ?>
 

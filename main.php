@@ -1,30 +1,24 @@
-<?php require_once("../includes/session.php"); ?>
-<?php require_once("../includes/functions.php"); ?>
+<?php require_once("session.php"); ?>
+<?php require_once("functions.php"); ?>
+<?php require_once("systemConstants.php"); ?>
+<?php require_once("dbConnection.php"); ?>
+<?php require_once("dbFunctions.php"); ?>
 
-<?php include("../includes/header.php"); ?>
+<?php
+	find_logged_in_user();
+	find_selected_user();
+	$loggedId= (int) $loggedInUser["id"];
+	$userId=0; //there is no user selected
+	?>
+	
+<?php require_once("navigation.php"); ?>
 
-<?php find_logged_in_user(); 
-
-if(!$loggedInUser){
-	redirect_to("logout.php");
-}?>
-
-<main>
-	<header>
-		<?php
-		echo output_errors();
-		echo get_message();?>
-	</header>
-	<nav>
-	<?php		
-		 if($loggedInUser["admin"]){ ?>
-		<a href="new_user.php">Add Someone Special</a>		
-		<?php } ?>	
-		<a href="logout.php">Logout</a>
-	</nav>
 	<section>
-		<?php	echo display_users(); ?>
+		<h1>Meet the Team</h1>
+		<div class="gallery">
+			<?php	echo display_users(); ?>
+		</div>	
 	</section>
-</main>
+	
+<?php include("footer.php"); ?>
 
-<?php include("../includes/footer.php"); ?>

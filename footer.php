@@ -1,7 +1,7 @@
+	<footer>
+		<img src="https://picturegallery.micheledupreez.ca/assets/comodo_secure_seal_113x59_transp.png" alt="Comodo TrustLogo">
+	</footer>
 </body>
-<footer>
-	<p>Contact</p>
-</footer>
 </html>
 <?php
   //Close database connection

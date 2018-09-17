@@ -1,18 +1,12 @@
-<?php require_once("../includes/session.php"); ?>
-<?php require_once("../includes/functions.php"); ?>
-<?php find_logged_in_user();?>
-
 <!DOCTYPE HTML>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<title>We Belong Here</title>
+	<meta charset="utf-8">
+	<meta name="description" content="Kids Picture Gallery">
+	<meta name="keywords" content="Kids,picture gallery,Kelowna,BC,web developer,websites,web design,mobile friendly">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Kids Picture Gallery</title>
 	<link rel="stylesheet" href="/styles/normalize.css">
-	<link rel="stylesheet" href="/styles/main.css">
+	<link rel="stylesheet" href="/styles/main.css" media="screen, projection">
 </head>
 <body>
-<header >
-	<h1>We Belong Here</h1>
-	<?php if($loggedInUser) { ?>
-	<h1>Hello <?php echo $loggedInUser["name"]; }?></h1>
-</header>

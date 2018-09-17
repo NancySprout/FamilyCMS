@@ -1,8 +1,7 @@
-<?php require_once("../includes/session.php"); ?>
-<?php require_once("../includes/dbConnection.php"); ?>
-<?php require_once("../includes/functions.php"); ?>
-
-<?php
+<?php 
+require_once("session.php"); 
+require_once("dbConnection.php"); 
+require_once("functions.php"); 
 
 function prep_sql_string($string){
 	global $connection;
@@ -13,7 +12,7 @@ function prep_sql_string($string){
 function check_result($result,$message){ 
 	if(!$result){
 		error_log($message,0);	
-		die("SQL query failed.");
+		die("SQL query failed:".$message);
 	}
 }	
 
@@ -31,7 +30,7 @@ function is_unique($email) {
 		$result=mysqli_query($connection,$query);
 		if($row =mysqli_fetch_assoc($result)) {
 			if($row["email"]==$safeEmail){
-				$errors["email"]="The email: ".$row["email"]." is already in use.";
+				$errors["email"]="Email address ".$row["email"]." is already in use.";
 				mysqli_free_result($result);	
 				return false;
 			} else {
@@ -285,7 +284,7 @@ function delete_image_in_db($imageId){
 		if($result&&mysqli_affected_rows($connection)==1) {
 			return true;
 		}	else {
-			error_log("delete_image_in db: ImageId: ".$imageId." could not be deleted in db: ".mysqli_error($connection));
+			error_log("delete_image_in db: ImageId: ".$imageId." could not be deleted in db: ".mysqli_error($connection),0);
 			return false;		
 		}
 }
