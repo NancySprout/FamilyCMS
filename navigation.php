@@ -78,7 +78,7 @@ include("header.php");?>
 				<label for="file">Get a new picture:</label>
 				<input type="file" name="image_file" id="file" title="Please select an image file" accept="image/jpg,image/png,image/jpeg,image/gif,image/jpe,image/bmp" required>
 				<label for="desc">All about this picture:</label>	
-					<textarea name="desc" id="desc" rows="5" cols="20" size="100" placeholder="Something about this picture..." onkeydown="pressEnter(event,this.nextElementSibling)"></textarea>
+					<textarea name="desc" id="desc" rows="3" size="100" placeholder="Something about this picture..." onkeydown="pressEnter(event,this.nextElementSibling)"></textarea>
 				<label for="profile">Make this my profile picture:</label>	
 					<input type="checkbox" id="profile" name="profile" value="1">
 				<input type="submit" name="submit" value="Load it">
@@ -112,11 +112,13 @@ include("header.php");?>
 				<label for="name">First name:</label>
 					<input type="text" name="name" id="name" size="20" placeholder="<?php echo $selectedUser["name"];?>" onkeydown="pressEnter(event,this.nextElementSibling)">
 				<label for="passw">New password:</label>
-					<input type="password" name="password" id="passw" size="20" onkeydown="pressEnter(event,this.nextElementSibling)">
+					<input type="password" name="password" id="passw" size="20" onchange="disableSubmit(this)">
+				<label for="repeat">Repeat password:</label>
+					<input type="password" name="repeat" id="repeat" size="20" onkeydown="pressEnter(event,this.nextElementSibling)" onkeyup="matchPassword(this)">
 				<label for="email3">E-mail address:</label>
 					<input type="email" name="email" id="email3" size="20" placeholder="<?php echo $selectedUser["email"];?>" onkeydown="pressEnter(event,this.nextElementSibling)">
 				<label for="desc">All about me:</label>
-					<textarea name="description" id="desc" rows="10" cols="40" size="400" value="" placeholder="<?php echo $selectedUser["description"];?>" ></textarea>
+					<textarea name="description" id="desc" rows="5" size="400" value="" placeholder="<?php echo $selectedUser["description"];?>" ></textarea>
 					<input type="button" name="submit" value="Update" onclick="submitForm(this.parentElement,'update_account.php')">	
 					<button type="button" class="cancelButton" onclick="cancelForm(this.parentElement)">Cancel</button>	
 					<div class="status"></div>		
@@ -126,6 +128,49 @@ include("header.php");?>
 	</header>
 	
 <script>
+
+//Disable submit when the password field has been filled-needs to be matched
+function disableSubmit(input) {
+	var form=input.parentElement;
+	var submitButton=form.querySelector("input[name=submit]");
+	var statusBox=form.querySelector("div");
+	var repeatInput=document.getElementById("repeat");
+	//Disable submit when the user entered a password that needs to be matched
+	if(input.value.length!=0) {
+		input.parentElement.querySelector("input[name=submit]").disabled="true";
+		submitButton.style.opacity="0.6";
+		repeatInput.required="true";	
+		statusBox.innerHTML="*Please repeat the password";
+	} else {
+		input.parentElement.querySelector("input[name=submit]").disabled="false";
+		submitButton.style.opacity="1.0";
+		repeatInput.removeAttribute("required");	
+		statusBox.innerHTML="";	
+	}
+}
+
+//Check that repeat password matches
+function matchPassword(input) {
+	//This is the repeat password
+	var inputLength=input.value.length;
+	var form=input.parentElement;
+	var statusBox=form.querySelector("div");
+	//Get the first password
+	var password=form.querySelectorAll("input")[1].value;
+	var submitButton=form.querySelector("input[name=submit]");
+	//Only try to match passwords if the first password has a value
+	//If the passwords don't match
+	if ((password.substr(0,inputLength)!=input.value)||(password.length!=input.value.length)) {
+		statusBox.innerHTML="*Passwords don't match";	
+		submitButton.disabled="true";
+		submitButton.style.opacity="0.6";
+	} else {
+		//The passwords match
+		statusBox.innerHTML="";	
+		submitButton.disabled="false";
+		submitButton.style.opacity="1.0";
+	}	
+}
 
 function validateFile(form) {
 	var inputFile=document.getElementById("file").files[0];
@@ -144,7 +189,8 @@ function validateFile(form) {
 	}
 }
 
-//This function triggers the onclick event on the submit/ok buttons when you press ENTER after filling out the last/some input field of a form.
+//This function triggers the onclick event on the submit/ok buttons when you press ENTER after filling out the last/some input field 
+//of a form.
 function pressEnter(event,submitButton) {
     var x = event.keyCode;
     if (x == 13) {  // 13 is the Enter key
@@ -159,17 +205,6 @@ function cancelForm(form) {
 	form.getElementsByClassName("status")[0].innerHTML="";
 	//Hide form div
 	form.parentElement.style.display = 'none';
-}
-
-//For future use
-function checkPassword(input) {
-	var inputLength=input.value.length;
-	var password=document.getElementById("pws").value;
-	if (password.substr(0,inputLength)!=input.value) {
-		document.getElementById("passwordMatch").innerHTML="Passwords don't match";	
-	} else {
-		document.getElementById("passwordMatch").innerHTML="";	
-	}	
 }
 
 function openDropDown() {

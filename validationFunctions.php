@@ -95,12 +95,12 @@ function validate_image_name(){
 			//Replace spaces with _
 			$imageName=str_replace(" ","_",basename($_FILES["image_file"]["name"]));
 			
-			//Make sure the name has numbers,letters and _ only	
-			$nameOk=char_test($imageName);
+			//Make sure the name has numbers,letters and _ only - not good! Could contain ().
+			//$nameOk=char_test($imageName);
 	
 			$ext=check_image_extension();
 	
-			if($nameOk&&$ext) {
+			if($ext) {
 				return $imageName;
 			} else {
 				$errors["file_name"]="This filetype is not supported.";

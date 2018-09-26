@@ -18,15 +18,13 @@ if (!$loggedInUser) {
 		
 		$maxFieldLengths=array("desc"=>100);
 		check_max_field_lengths($maxFieldLengths);	
-		
 		$imageName=validate_image_name();
-	
+		
 		if(!empty($errors)) {
 			//Put errors in session before redirecting to another page
 			$_SESSION["errors"]=$errors;	
 			//echo output_errors($errors);				
 		 }	else {		
-			$imageName=prep_sql_string($imageName);
 			$description=prep_sql_string(prep_data($_POST["desc"]));
 					
 			//Get image properties/parameters in an array
@@ -53,7 +51,7 @@ if (!$loggedInUser) {
 				$result=mysqli_query($connection,$query);
 				$imageId=mysqli_insert_id($connection);
 				
-				check_result($result,"load_image.php:Could not load ".$imageName.": ".mysqli_error($connection));
+				check_result($result,"load_image.php:Could not load image: ".mysqli_error($connection));
 									
 				//Create destination path +filename for file system storage	
 				$destinationFile=FS_PATH.$selectedUser["user_dir"]."/".$safeFileName;				
