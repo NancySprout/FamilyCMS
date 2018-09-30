@@ -48,7 +48,7 @@ include("navigation.php"); ?>
 		 	$count++;?>	
 		 	<div class="pictureFrame">
 		  	 	<span class="counter"><?php echo $count." / ".$rowcount."/".$imageId?></span>
-				<img src="<?php echo $imageUrl?>" alt="This image is missing." onclick="openModal(this)">
+				<img src="<?php echo $imageUrl?>" alt="Some image" onclick="openModal(this)">
 				<div class="caption">
 					<?php //If this is an admin or this is the logged in user's account	
 						if($loggedInUser["admin"]||($loggedId==$userId)){?>
@@ -74,6 +74,7 @@ include("navigation.php"); ?>
 			  	<span class="close" onclick="closeModal()">&times;</span>
 				 <img id="modalImage" alt="Missing image">
 				 <p id="modalCaption"></p>
+				 <span id="modalCounter"></span>
 			    <!-- Next and previous buttons -->
   					<button class="button prev" onclick="showImage(-1)">&#10094;</button>
   					<button class="button next" onclick="showImage(1)">&#10095;</button>
@@ -140,12 +141,13 @@ function openModal(image) {
 	//Only open modal at screen width greater than 606px - disabled for small screens 
 	if (screen.width>606) {
 		document.getElementById("modalDiv").style.display="block";
-		document.getElementById("modalImage").src = image.src;
+		document.getElementById("modalImage").src = image.src;		
 		document.getElementById("modalCaption").innerHTML=image.nextElementSibling.querySelector("p").innerHTML;
 		modalIndexArray = image.previousElementSibling.innerHTML.split("/");
 		//Why does imageIndex end up being an array? It should be an integer by default!
 		imageIndex = Number(modalIndexArray[0]);
 		totalCount =Number(modalIndexArray[1]);
+		document.getElementById("modalCounter").innerHTML=imageIndex+"/"+totalCount;
 	}
 }
 
@@ -167,6 +169,7 @@ function showImage(n) {
 	var newImage =  frameList[imageIndex-1].querySelector("img");
 	document.getElementById("modalImage").src = newImage.src;
 	document.getElementById("modalCaption").innerHTML=newImage.nextElementSibling.querySelector("p").innerHTML;
+	document.getElementById("modalCounter").innerHTML=imageIndex+"/"+totalCount;
 }
  
 </script>

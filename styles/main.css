@@ -515,18 +515,9 @@ section h1 {
 	cursor: pointer;
 }
 
-/* Hide the imageId - needed for AJAX caption updates*/
-.pictureFrame>span {
-	display: none;
-}
-
+/* Hide counter and imageId by default*/
 .pictureFrame .counter {
-	position: absolute;
-	top: 0;
-	left: 0;
-	padding: 0 15px;
-	font-size: 0.7em;
-	color: rgb(36, 67, 92);
+	display: none;
 }
 
 .caption {
@@ -628,6 +619,7 @@ section h1 {
 
 /*Modal background*/
 #modalDiv {
+	position: relative;
 	display:none;
 	position: fixed;
 	z-index: 10;
@@ -637,7 +629,6 @@ section h1 {
 	left: 0;
 	background-color: rgba(0,0,0,0.7);
 }
-
 
 @-webkit-keyframes zoom {
     from {-webkit-transform:scale(0);transform:scale(0)}
@@ -660,6 +651,14 @@ section h1 {
 	animation-name: zoom;
    -webkit-animation-duration: 1s;
    animation-duration: 1s;
+}
+
+#modalCounter {
+	position: absolute;
+	top: 5vh;
+	width: 100%;
+	text-align: center;
+	color: white;
 }
 
 #modalCaption {
